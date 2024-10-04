@@ -6,7 +6,7 @@ function TableHeader() {
       <tr>
         <th>Name</th>
         <th>Job</th>
-        <th>Remove</th> {/* Add a header for the delete column */}
+        <th>Remove</th> 
       </tr>
     </thead>
   );
@@ -18,7 +18,7 @@ function TableBody({ characterData, removeCharacter }) {
       <td>{row.name}</td>
       <td>{row.job}</td>
       <td>
-        <button onClick={() => removeCharacter(index)}>Delete</button> {/* Delete button */}
+        <button onClick={() => removeCharacter(index)}>Delete</button> 
       </td>
     </tr>
   ));

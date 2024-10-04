@@ -6,7 +6,6 @@ function Form({ handleSubmit }) {
     job: ""
   });
 
-  // Function to handle input changes and update form state
   function handleChange(event) {
     const { name, value } = event.target;
     setPerson((prevPerson) => ({
@@ -15,12 +14,11 @@ function Form({ handleSubmit }) {
     }));
   }
 
-  // Function to handle form submission
   function onSubmit(event) {
-    event.preventDefault(); // Prevent page reload on form submission
+    event.preventDefault(); 
     if (person.name && person.job) {
-      handleSubmit(person); // Send the new person data to MyApp
-      setPerson({ name: "", job: "" }); // Clear the form after submission
+      handleSubmit(person); 
+      setPerson({ name: "", job: "" }); 
     }
   }
 
