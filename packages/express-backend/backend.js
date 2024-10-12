@@ -35,35 +35,61 @@ const users = {
   ]
 };
 
-// Helper function to find user by name
+
 const findUserByName = (name) => {
   return users["users_list"].filter(
     (user) => user["name"] === name
   );
 };
 
-// Helper function to find user by id
+
 const findUserById = (id) => {
   return users["users_list"].find(
     (user) => user["id"] === id
   );
 };
 
-// Helper function to add a new user
+
 const addUser = (user) => {
   users["users_list"].push(user);
   return user;
 };
 
-// Root route
+
+const findUsersByNameAndJob = (name, job) => {
+  return users["users_list"].filter(
+    (user) => user["name"] === name && user["job"] === job
+  );
+};
+
+
+const deleteUserById = (id) => {
+  const index = users["users_list"].findIndex(
+    (user) => user["id"] === id
+  );
+  if (index !== -1) {
+    users["users_list"].splice(index, 1);
+    return true;
+  } else {
+    return false;
+  }
+};
+
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-// /users route to get all users or filter by name
+
 app.get("/users", (req, res) => {
   const name = req.query.name;
-  if (name !== undefined) {
+  const job = req.query.job;
+  
+  if (name !== undefined && job !== undefined) {
+    let result = findUsersByNameAndJob(name, job);
+    result = { users_list: result };
+    res.send(result);
+  } else if (name !== undefined) {
     let result = findUserByName(name);
     result = { users_list: result };
     res.send(result);
@@ -72,7 +98,7 @@ app.get("/users", (req, res) => {
   }
 });
 
-// /users/:id route to get a user by id
+
 app.get("/users/:id", (req, res) => {
   const id = req.params.id;
   let result = findUserById(id);
@@ -83,11 +109,21 @@ app.get("/users/:id", (req, res) => {
   }
 });
 
-// /users route to add a new user (POST)
 app.post("/users", (req, res) => {
-  const userToAdd = req.body;  // Get the user data from the request body
-  addUser(userToAdd);          // Add the new user to the list
-  res.status(201).send();      // Respond with status 201 (Created)
+  const userToAdd = req.body;  
+  addUser(userToAdd);          
+  res.status(201).send();      
+});
+
+
+app.delete("/users/:id", (req, res) => {
+  const id = req.params.id;
+  const result = deleteUserById(id);
+  if (result) {
+    res.status(204).send(); 
+  } else {
+    res.status(404).send("Resource not found.");
+  }
 });
 
 app.listen(port, () => {
