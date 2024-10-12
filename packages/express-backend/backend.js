@@ -1,15 +1,66 @@
-// backend.js
-import express from "express";  // ES module syntax for importing Express
+// // backend.js
+// import express from "express";
+
+// const app = express();
+// const port = 8000;
+
+// app.use(express.json());
+
+// app.get("/", (req, res) => {
+//   res.send("Hello World!");
+// });
+
+// app.listen(port, () => {
+//   console.log(`Example app listening at http://localhost:${port}`);
+// });
+
+import express from "express";
 
 const app = express();
 const port = 8000;
 
 app.use(express.json());
 
+const users = {
+  users_list: [
+    {
+      id: "xyz789",
+      name: "Charlie",
+      job: "Janitor"
+    },
+    {
+      id: "abc123",
+      name: "Mac",
+      job: "Bouncer"
+    },
+    {
+      id: "ppp222",
+      name: "Mac",
+      job: "Professor"
+    },
+    {
+      id: "yat999",
+      name: "Dee",
+      job: "Aspiring actress"
+    },
+    {
+      id: "zap555",
+      name: "Dennis",
+      job: "Bartender"
+    }
+  ]
+};
+
+// Root route
 app.get("/", (req, res) => {
-  res.send("Hello World!");  // Respond with 'Hello World!' when the root route is accessed
+  res.send("Hello World!");
+});
+
+// /users route to get the list of users
+app.get("/users", (req, res) => {
+  res.send(users);
 });
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);  // Output message when server starts
+  console.log(`Example app listening at http://localhost:${port}`);
 });
