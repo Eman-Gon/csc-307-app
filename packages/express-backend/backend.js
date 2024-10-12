@@ -1,133 +1,3 @@
-// // // // backend.js
-// // // import express from "express";
-
-// // // const app = express();
-// // // const port = 8000;
-
-// // // app.use(express.json());
-
-// // // app.get("/", (req, res) => {
-// // //   res.send("Hello World!");
-// // // });
-
-// // // app.listen(port, () => {
-// // //   console.log(`Example app listening at http://localhost:${port}`);
-// // // });
-
-// // import express from "express";
-
-// // const app = express();
-// // const port = 8000;
-
-// // app.use(express.json());
-
-// // const users = {
-// //   users_list: [
-// //     {
-// //       id: "xyz789",
-// //       name: "Charlie",
-// //       job: "Janitor"
-// //     },
-// //     {
-// //       id: "abc123",
-// //       name: "Mac",
-// //       job: "Bouncer"
-// //     },
-// //     {
-// //       id: "ppp222",
-// //       name: "Mac",
-// //       job: "Professor"
-// //     },
-// //     {
-// //       id: "yat999",
-// //       name: "Dee",
-// //       job: "Aspiring actress"
-// //     },
-// //     {
-// //       id: "zap555",
-// //       name: "Dennis",
-// //       job: "Bartender"
-// //     }
-// //   ]
-// // };
-
-// // // Root route
-// // app.get("/", (req, res) => {
-// //   res.send("Hello World!");
-// // });
-
-// // // /users route to get the list of users
-// // app.get("/users", (req, res) => {
-// //   res.send(users);
-// // });
-
-// // app.listen(port, () => {
-// //   console.log(`Example app listening at http://localhost:${port}`);
-// // });
-// import express from "express";
-
-// const app = express();
-// const port = 8000;
-
-// app.use(express.json());
-
-// const users = {
-//   users_list: [
-//     {
-//       id: "xyz789",
-//       name: "Charlie",
-//       job: "Janitor"
-//     },
-//     {
-//       id: "abc123",
-//       name: "Mac",
-//       job: "Bouncer"
-//     },
-//     {
-//       id: "ppp222",
-//       name: "Mac",
-//       job: "Professor"
-//     },
-//     {
-//       id: "yat999",
-//       name: "Dee",
-//       job: "Aspiring actress"
-//     },
-//     {
-//       id: "zap555",
-//       name: "Dennis",
-//       job: "Bartender"
-//     }
-//   ]
-// };
-
-// // Function to find users by name
-// const findUserByName = (name) => {
-//   return users["users_list"].filter(
-//     (user) => user["name"] === name
-//   );
-// };
-
-// // Root route
-// app.get("/", (req, res) => {
-//   res.send("Hello World!");
-// });
-
-// // /users route to get all users or filter by name
-// app.get("/users", (req, res) => {
-//   const name = req.query.name;  // Get the query parameter 'name'
-//   if (name !== undefined) {
-//     let result = findUserByName(name);
-//     result = { users_list: result };  // Format the response
-//     res.send(result);
-//   } else {
-//     res.send(users);  // Send all users if no query string is provided
-//   }
-// });
-
-// app.listen(port, () => {
-//   console.log(`Example app listening at http://localhost:${port}`);
-// });
 import express from "express";
 
 const app = express();
@@ -179,6 +49,12 @@ const findUserById = (id) => {
   );
 };
 
+// Helper function to add a new user
+const addUser = (user) => {
+  users["users_list"].push(user);
+  return user;
+};
+
 // Root route
 app.get("/", (req, res) => {
   res.send("Hello World!");
@@ -186,25 +62,32 @@ app.get("/", (req, res) => {
 
 // /users route to get all users or filter by name
 app.get("/users", (req, res) => {
-  const name = req.query.name;  // Get the query parameter 'name'
+  const name = req.query.name;
   if (name !== undefined) {
     let result = findUserByName(name);
-    result = { users_list: result };  // Format the response
+    result = { users_list: result };
     res.send(result);
   } else {
-    res.send(users);  // Send all users if no query string is provided
+    res.send(users);
   }
 });
 
 // /users/:id route to get a user by id
 app.get("/users/:id", (req, res) => {
-  const id = req.params.id;  // Get the id from the route parameter
-  let result = findUserById(id);  // Find user by id
+  const id = req.params.id;
+  let result = findUserById(id);
   if (result === undefined) {
-    res.status(404).send("Resource not found.");  // Return 404 if no user found
+    res.status(404).send("Resource not found.");
   } else {
-    res.send(result);  // Send the found user
+    res.send(result);
   }
+});
+
+// /users route to add a new user (POST)
+app.post("/users", (req, res) => {
+  const userToAdd = req.body;  // Get the user data from the request body
+  addUser(userToAdd);          // Add the new user to the list
+  res.status(201).send();      // Respond with status 201 (Created)
 });
 
 app.listen(port, () => {
