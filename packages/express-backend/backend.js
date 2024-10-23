@@ -17,6 +17,10 @@ mongoose.connect(process.env.MONGO_CONNECTION_STRING)
   .then(() => console.log("Connected to MongoDB"))
   .catch((error) => console.log("MongoDB connection error:", error));
 
+app.get("/", (req, res) => {
+  res.send("Welcome to the User API!");
+});
+
 app.get("/users", async (req, res) => {
   const { name, job } = req.query;
 
