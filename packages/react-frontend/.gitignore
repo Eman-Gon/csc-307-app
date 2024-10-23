@@ -27,3 +27,8 @@ node_modules
 
 # Ignore all package-lock.json files
 **/package-lock.json
+
+
+# Ignore specific untracked files and directories
+**/node_modules/
+packages/express-backend/
